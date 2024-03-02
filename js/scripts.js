@@ -13,18 +13,17 @@ const getDataCity = async (city) => {
     const urlApi = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${keyApi}&lang=pt_br`
     const res = await fetch(urlApi)
     const data = await res.json()
-
     return data
 }
 
 const initialize = async () => {
     const data = await getDataCity("ceara")
 
-    setDate(data.name, parseInt(data.main.temp), data.weather[0].description)
+    setDate(data.name, parseInt(data.main.temp), data.weather[0].description, data.sys.country)
 }
 
-const setDate = (city, temp, climate) => {
-    cityEl.textContent = city
+const setDate = (city, temp, climate, country) => {
+    cityEl.textContent = `${city} - ${country}`
     tempEl.textContent = temp
     climateEl.textContent = climate
 }
@@ -48,7 +47,7 @@ form.addEventListener("submit", e => {
 
         if (data.cod == "404") return showMessege()
 
-        setDate(data.name, parseInt(data.main.temp), data.weather[0].description)
+        setDate(data.name, parseInt(data.main.temp), data.weather[0].description, data.sys.country)
     }
 
     changeTextElements()
